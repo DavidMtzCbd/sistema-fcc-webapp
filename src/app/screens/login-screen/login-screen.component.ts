@@ -17,7 +17,7 @@ export class LoginScreenComponent implements OnInit{
 
   constructor(
     private router: Router,
-    private facadeService: FacadeService
+    private facadeService: FacadeService //se debe de crear su service.ts
   ){}
 
   ngOnInit(): void {

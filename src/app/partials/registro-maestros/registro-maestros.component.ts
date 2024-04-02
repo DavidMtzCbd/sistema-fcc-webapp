@@ -76,6 +76,33 @@ export class RegistroMaestrosComponent implements OnInit{
       return false;
     }
 
+    //Invocacion del servicio
+    //validar la contraseña que coincida
+    if(this.maestro.password == this.maestro.confirmar_password){
+
+      //Vamos a consumir el servicoi de registrar maestro
+      //Si todo es correcto se registra/se llama al servicio
+    this.maestrosService.registrarMaestro(this.maestro).subscribe(
+      (response)=>{
+        alert("Usuario registrado correctamente")
+        console.log("Usuario registrado: ", response);
+        this.router.navigate(["/"]);
+      }, (error)=>{
+        alert("No se pudo registrar usuario");
+      }
+      );
+
+    }else{
+      alert("Las contraseñas no coinciden");
+      this.maestro.password="";
+      this.maestro.confirmar_password="";
+    }
+
+    this.errors = this.maestrosService.validarMaestro(this.maestro, this.editar);
+    if(!$.isEmptyObject(this.errors)){
+      return false;
+    }
+
   }
 
   //Funciones para password

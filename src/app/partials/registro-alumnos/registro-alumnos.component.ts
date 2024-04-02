@@ -95,6 +95,29 @@ export class RegistroAlumnosComponent implements OnInit{
       return false;
     }
 
+    //Invocacion del servicio
+    //validar la contraseña que coincida
+    if(this.alumno.password == this.alumno.confirmar_password){
+
+      //Vamos a consumir el servicoi de registrar Alumno
+      //Si todo es correcto se registra/se llama al servicio
+    this.alumnosService.registrarAlumno(this.alumno).subscribe(
+      (response)=>{
+        alert("Usuario registrado correctamente")
+        console.log("Usuario registrado: ", response);
+        this.router.navigate(["/"]);
+      }, (error)=>{
+        alert("No se pudo registrar usuario");
+      }
+      );
+
+    }else{
+      alert("Las contraseñas no coinciden");
+      this.alumno.password="";
+      this.alumno.confirmar_password="";
+    }
+
+
   }
 
   public actualizar(){

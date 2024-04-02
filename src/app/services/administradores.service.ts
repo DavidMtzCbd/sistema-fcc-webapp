@@ -4,6 +4,7 @@ import { ValidatorService } from './tools/validator.service';
 import { ErrorsService } from './tools/errors.service';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { FacadeService } from './facade.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -18,7 +19,7 @@ export class AdministradoresService {
     private http: HttpClient,
     private validatorService: ValidatorService,
     private errorService: ErrorsService,
-    // private facadeService: FacadeService
+    private facadeService: FacadeService
   ) { }
 
   public esquemaAdmin(){
@@ -102,7 +103,13 @@ export class AdministradoresService {
   //Aquí van los servicios HTTP
   //Servicio para registrar un nuevo usuario
   public registrarAdmin (data: any): Observable <any>{
-    return this.http.post<any>(`${environment.url_api}/admin/`,data, httpOptions);
+    return this.http.post<any>(`${environment.url_api}/admin/`,data, httpOptions); //el post es una funcion
+  }
+
+  public obtenerListaAdmins (): Observable <any>{
+    var token = this.facadeService.getSessionToken();
+    var headers = new HttpHeaders({ 'Content-Type': 'application/json' , 'Authorization': 'Bearer '+token});
+    return this.http.get<any>(`${environment.url_api}/lista-admins/`, {headers:headers});
   }
 
 
