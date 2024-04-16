@@ -121,4 +121,10 @@ export class MaestrosService {
     return this.http.get<any>(`${environment.url_api}/lista-maestros/`, {headers:headers});
   }
 
+
+    //Funcion para obtener al maestro con su ID
+    public getMaestroByID(idUser: Number){
+      return this.http.get<any>(`${environment.url_api}/maestros/?id=${idUser}` ,httpOptions);
+    }
+
 }

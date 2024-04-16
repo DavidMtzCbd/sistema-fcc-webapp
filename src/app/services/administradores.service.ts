@@ -112,5 +112,10 @@ export class AdministradoresService {
     return this.http.get<any>(`${environment.url_api}/lista-admins/`, {headers:headers});
   }
 
+  //Funcion para obtener al admin con su ID
+  public getAdminByID(idUser: Number){
+    return this.http.get<any>(`${environment.url_api}/admin/?id=${idUser}` ,httpOptions);
+  }
+
 
 }

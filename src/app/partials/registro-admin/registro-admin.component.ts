@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AdministradoresService } from '../../services/administradores.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FacadeService } from 'src/app/services/facade.service';
+import { Location } from '@angular/common';
 //Para poder usar jquery definir esto
 declare var $:any;
 
@@ -11,31 +13,49 @@ declare var $:any;
 })
 export class RegistroAdminComponent implements OnInit{
   @Input() rol: string = "";
+  @Input() datos_user: any = {};
 
-  public admin:any ={};
-  public editar:boolean =false;
-  public errors:any = {};
-  //Para contraseñas
-  public hide_1: boolean = false;
-  public hide_2: boolean = false;
-  public inputType_1: string = 'password';
-  public inputType_2: string = 'password';
+//Para contraseñas
+public hide_1: boolean = false;
+public hide_2: boolean = false;
+public inputType_1: string = 'password';
+public inputType_2: string = 'password';
+
+public admin:any= {};
+public token: string = "";
+public errors:any={};
+public editar:boolean = false;
+public idUser: Number = 0;
 
   constructor(
     private administradoresService: AdministradoresService,
-    private router: Router
+    private router: Router,
+    public activatedRoute: ActivatedRoute,
+    private location: Location,
+    private facadeService: FacadeService
   ){}
 
   ngOnInit(): void {
-    //Definir el esquema a mi JSON
-    this.admin = this.administradoresService.esquemaAdmin();
-    this.admin.rol = this.rol;
-    console.log("Admin: ", this.admin);
+//El primer if valida si existe un parámetro en la URL
+if(this.activatedRoute.snapshot.params['id'] != undefined){
+  this.editar = true;
+  //Asignamos a nuestra variable global el valor del ID que viene por la URL
+  this.idUser = this.activatedRoute.snapshot.params['id'];
+  console.log("ID User: ", this.idUser);
+  //Al iniciar la vista asignamos los datos del user
+  this.admin = this.datos_user;
+}else{
+  this.admin = this.administradoresService.esquemaAdmin();
+  this.admin.rol = this.rol;
+  this.token = this.facadeService.getSessionToken();
+}
+//Imprimir datos en consola
+console.log("Admin: ", this.admin);
 
   }
 
   public regresar(){
-
+    this.location.back();
   }
 
   public registrar(){

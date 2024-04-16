@@ -131,4 +131,9 @@ export class AlumnosService {
   }
 
 
+    //Funcion para obtener al alumno con su ID
+    public getAlumnoByID(idUser: Number){
+      return this.http.get<any>(`${environment.url_api}/alumno/?id=${idUser}` ,httpOptions);
+    }
+
 }
