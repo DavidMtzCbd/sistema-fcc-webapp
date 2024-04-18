@@ -76,7 +76,7 @@ export class RegistroMaestrosComponent implements OnInit{
       this.token = this.facadeService.getSessionToken();
     }
     //Imprimir datos en consola
-    console.log("Admin: ", this.maestro);
+    console.log("Maestro: ", this.maestro);
 
 
   }
@@ -158,7 +158,25 @@ export class RegistroMaestrosComponent implements OnInit{
   }
 
   public actualizar(){
+    //Validación
+    this.errors = [];
 
+    this.errors = this.maestrosService.validarMaestro(this.maestro, this.editar);
+    if(!$.isEmptyObject(this.errors)){
+      return false;
+    }
+    console.log("Pasó la validación");
+
+    this.maestrosService.editarMaestro(this.maestro).subscribe(
+      (response)=>{
+        alert("Maestro editado correctamente");
+        console.log("Maestro editado: ", response);
+        //Si se editó, entonces mandar al home
+        this.router.navigate(["home"]);
+      }, (error)=>{
+        alert("No se pudo editar el maestro");
+      }
+    );
   }
 
   public checkboxChange(event:any){
@@ -176,8 +194,16 @@ export class RegistroMaestrosComponent implements OnInit{
     console.log("Array materias: ", this.maestro);
   }
 
-  public changeSelect(event:any){
-    console.log(event.value);
-    this.maestro.area_investigacion = event.value;
+  public revisarSeleccion(nombre: string){
+    if(this.maestro.materias_json){
+      var busqueda = this.maestro.materias_json.find((element)=>element==nombre);
+      if(busqueda != undefined){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
   }
 }

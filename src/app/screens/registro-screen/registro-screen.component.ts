@@ -100,7 +100,7 @@ export class RegistroScreenComponent implements OnInit{
           this.user.last_name = response.user.last_name;
           this.user.email = response.user.email;
           this.user.tipo_usuario = this.rol;
-          this.isMaestro = true;
+          this.isAlumno = true;
           console.log("Datos alumno: ", this.user);
         }, (error)=>{
           alert("No se pudieron obtener los datos del usuario para editar")
