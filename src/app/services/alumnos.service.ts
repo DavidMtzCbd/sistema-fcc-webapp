@@ -143,4 +143,10 @@ export class AlumnosService {
     return this.http.put<any>(`${environment.url_api}/alumnos-edit/`, data, {headers:headers});
   }
 
+// Funcion para eliminar Alumno
+  public eliminarAlumno(idUser: number): Observable <any>{
+    var token = this.facadeService.getSessionToken();
+    var headers = new HttpHeaders({ 'Content-Type': 'application/json' , 'Authorization': 'Bearer '+token});
+    return this.http.delete<any>(`${environment.url_api}/alumnos-edit/?id=${idUser}`, {headers:headers});
+  }
 }
