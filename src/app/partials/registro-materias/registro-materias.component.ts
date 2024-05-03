@@ -12,7 +12,7 @@ declare var $:any;
 })
 export class RegistroMateriasComponent implements OnInit{
 
-  @Input() rol: string = "";
+
   @Input() datos_user: any = {};
 
   // para las contraseñas
@@ -65,7 +65,6 @@ export class RegistroMateriasComponent implements OnInit{
       this.materia = this.datos_user;
     }else{
       this.materia = this.materiasService.esquemaMateria();
-      this.materia.rol = this.rol;
       this.token = this.facadeService.getSessionToken();
     }
     //Imprimir datos en consola

@@ -40,10 +40,24 @@
       <div *ngIf="errors.dias_json" class="invalid-feedback">{{ errors.dias_json }}</div>
 
       <!-- AQUI VA EL RELOJ INICIO  -->
-
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Hora de inicio</mat-label>
+        <input matInput [ngxTimepicker]="timepickerInicio" placeholder="Selecciona la hora" [(ngModel)]="materia.hora_inicio" name="hora_inicio" >
+        <mat-icon matSuffix (click)="timepickerInicio.open()">schedule</mat-icon>
+        <ngx-material-timepicker #timepickerInicio [format]="24" ></ngx-material-timepicker>
+      </mat-form-field>
+      <div *ngIf="errors.hora_inicio" class="invalid-feedback">{{ errors.hora_inicio }}</div>
 
 
       <!-- AQUI VA EL RELOJ FIN  -->
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Hora de fin</mat-label>
+        <input matInput [ngxTimepicker]="timepickerFin" placeholder="Selecciona la hora" [(ngModel)]="materia.hora_fin" name="hora_fin" >
+        <mat-icon matSuffix (click)="timepickerFin.open()">schedule</mat-icon>
+        <ngx-material-timepicker #timepickerFin [format]="24" ></ngx-material-timepicker>
+      </mat-form-field>
+      <div *ngIf="errors.hora_fin" class="invalid-feedback">{{ errors.hora_fin }}</div>
 
 
       <mat-form-field class="mat-input" appearance="outline">
