@@ -12,14 +12,9 @@ declare var $:any;
 })
 export class RegistroMateriasComponent implements OnInit{
 
-
+  @Input() rol: string = "";
   @Input() datos_user: any = {};
 
-  // para las contraseñas
-  public hide_1: boolean = false;
-  public hide_2: boolean = false;
-  public inputType_1: string = 'password';
-  public inputType_2: string = 'password';
 
   public materia: any = {};
   public token: string = "";
@@ -28,8 +23,7 @@ export class RegistroMateriasComponent implements OnInit{
   public idUser: Number = 0;
 
   // check
-  public valoresCheckbox: any = [];
-  public dias_json: any = [] = [];
+
 
     //Para el select
   public programa_educativo: any[] = [
@@ -82,6 +76,26 @@ export class RegistroMateriasComponent implements OnInit{
 
     this.errors = this.materiasService.validarMateria(this.materia, this.editar);
     if(!$.isEmptyObject(this.errors)){
+      console.log("Error en el formulario")
+      return false;
+    }
+
+          //Vamos a consumir el servicoi de registrar materia
+      //Si todo es correcto se registra/se llama al servicio
+      this.materiasService.registrarMateria(this.materia).subscribe(
+        (response)=>{
+          alert("Materia registrada correctamente")
+          console.log("Materia registrado: ", response);
+          this.location.back();
+        }, (error)=>{
+          alert("No se pudo registrar materia");
+          console.log("Error al realizar registro: ", error)
+        }
+        );
+
+
+    this.errors = this.materiasService.validarMateria(this.materia, this.editar);
+    if(!$.isEmptyObject(this.errors)){
       return false;
     }
 
@@ -113,12 +127,12 @@ export class RegistroMateriasComponent implements OnInit{
   public checkboxChange(event:any){
     console.log("Evento: ", event);
     if(event.checked){
-      this.materia.dias_json.push(event.source.value)
+      this.materia.dias.push(event.source.value)
     }else{
       console.log(event.source.value);
-      this.materia.dias_json.forEach((dia, i) => {
+      this.materia.dias.forEach((dia, i) => {
         if(dia == event.source.value){
-          this.materia.dias_json.splice(i,1);
+          this.materia.dias.splice(i,1);
         }
       });
     }
@@ -126,8 +140,8 @@ export class RegistroMateriasComponent implements OnInit{
   }
 
   public revisarSeleccion(nombre: string){
-    if(this.materia.dias_json){
-      var busqueda = this.materia.dias_json.find((element)=>element==nombre);
+    if(this.materia.dias){
+      var busqueda = this.materia.dias.find((element)=>element==nombre);
       if(busqueda != undefined){
         return true;
       }else{

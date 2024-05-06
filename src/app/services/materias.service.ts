@@ -28,7 +28,7 @@ export class MateriasService {
       'nrc' : '',
       'nombre_materia' : '',
       'seccion' : '',
-      'dias_json' : [],
+      'dias' : [],
       'hora_inicio' : '',
       'hora_fin' : '',
       'salon' : '',
@@ -58,8 +58,8 @@ export class MateriasService {
     error["seccion"] = this.errorService.numeric;
   }
 // VALIDA QUE SE ESCOGA AL MENOS UNO
-  if(data["dias_json"].length == 0){
-    error["dias_json"] = "Al menos debes elegir un día";
+  if(data["dias"].length == 0){
+    error["dias"] = "Al menos debes elegir un día";
   }
   // VALIDA QUE ESTE LLENO
   if(!this.validatorService.required(data["hora_inicio"])){
@@ -87,13 +87,13 @@ export class MateriasService {
     //Aquí van los servicios HTTP
   //Servicio para registrar un nuevo usuario en este caso materia
   public registrarMateria (data: any): Observable <any>{
-    return this.http.post<any>(``,data, httpOptions);
+    return this.http.post<any>(`${environment.url_api}/materias/`,data, httpOptions);
   }
 
   public obtenerListaMateria (): Observable <any>{
     var token = this.facadeService.getSessionToken();
     var headers = new HttpHeaders({ 'Content-Type': 'application/json' , 'Authorization': 'Bearer '+token});
-    return this.http.get<any>(``, {headers:headers});
+    return this.http.get<any>(`${environment.url_api}/lista-materias/`, {headers:headers});
   }
 
 
