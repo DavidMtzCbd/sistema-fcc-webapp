@@ -12,11 +12,11 @@ declare var $:any;
 })
 export class RegistroMateriasComponent implements OnInit{
 
-  @Input() rol: string = "";
-  @Input() datos_user: any = {};
+  @Input() materia: string = "";
+  @Input() datos_materia: any = {};
 
 
-  public materia: any = {};
+  public materias: any = {};
   public token: string = "";
   public errors:any={};
   public editar:boolean = false;
@@ -56,13 +56,13 @@ export class RegistroMateriasComponent implements OnInit{
       this.idUser = this.activatedRoute.snapshot.params['id'];
       console.log("ID User: ", this.idUser);
       //Al iniciar la vista asignamos los datos del user
-      this.materia = this.datos_user;
+      this.materias = this.datos_materia;
     }else{
-      this.materia = this.materiasService.esquemaMateria();
+      this.materias = this.materiasService.esquemaMateria();
       this.token = this.facadeService.getSessionToken();
     }
     //Imprimir datos en consola
-    console.log("Materia: ", this.materia);
+    console.log("Materia: ", this.materias);
 
   }
 
@@ -74,7 +74,7 @@ export class RegistroMateriasComponent implements OnInit{
     //validar
     this.errors = [];
 
-    this.errors = this.materiasService.validarMateria(this.materia, this.editar);
+    this.errors = this.materiasService.validarMateria(this.materias, this.editar);
     if(!$.isEmptyObject(this.errors)){
       console.log("Error en el formulario")
       return false;
@@ -82,7 +82,7 @@ export class RegistroMateriasComponent implements OnInit{
 
           //Vamos a consumir el servicoi de registrar materia
       //Si todo es correcto se registra/se llama al servicio
-      this.materiasService.registrarMateria(this.materia).subscribe(
+      this.materiasService.registrarMateria(this.materias).subscribe(
         (response)=>{
           alert("Materia registrada correctamente")
           console.log("Materia registrado: ", response);
@@ -94,7 +94,7 @@ export class RegistroMateriasComponent implements OnInit{
         );
 
 
-    this.errors = this.materiasService.validarMateria(this.materia, this.editar);
+    this.errors = this.materiasService.validarMateria(this.materias, this.editar);
     if(!$.isEmptyObject(this.errors)){
       return false;
     }
@@ -106,13 +106,13 @@ export class RegistroMateriasComponent implements OnInit{
     //Validación
     this.errors = [];
 
-    this.errors = this.materiasService.validarMateria(this.materia, this.editar);
+    this.errors = this.materiasService.validarMateria(this.materias, this.editar);
     if(!$.isEmptyObject(this.errors)){
       return false;
     }
     console.log("Pasó la validación");
 
-    this.materiasService.editarMateria(this.materia).subscribe(
+    this.materiasService.editarMateria(this.materias).subscribe(
       (response)=>{
         alert("Materia editado correctamente");
         console.log("Materia editado: ", response);
@@ -127,12 +127,12 @@ export class RegistroMateriasComponent implements OnInit{
   public checkboxChange(event:any){
     console.log("Evento: ", event);
     if(event.checked){
-      this.materia.dias.push(event.source.value)
+      this.materias.dias.push(event.source.value)
     }else{
       console.log(event.source.value);
-      this.materia.dias.forEach((dia, i) => {
+      this.materias.dias.forEach((dia, i) => {
         if(dia == event.source.value){
-          this.materia.dias.splice(i,1);
+          this.materias.dias.splice(i,1);
         }
       });
     }
@@ -140,8 +140,8 @@ export class RegistroMateriasComponent implements OnInit{
   }
 
   public revisarSeleccion(nombre: string){
-    if(this.materia.dias){
-      var busqueda = this.materia.dias.find((element)=>element==nombre);
+    if(this.materias.dias){
+      var busqueda = this.materias.dias.find((element)=>element==nombre);
       if(busqueda != undefined){
         return true;
       }else{

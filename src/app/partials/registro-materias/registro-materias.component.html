@@ -9,19 +9,19 @@
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>NRC</mat-label>
-        <input matInput [(ngModel)]="materia.nrc" name="id" placeholder="Escribe el NRC">
+        <input matInput [(ngModel)]="materias.nrc" name="id" placeholder="Escribe el NRC">
       </mat-form-field>
       <div *ngIf="errors.nrc" class="invalid-feedback">{{ errors.nrc }}</div>
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Nombre de la materia</mat-label>
-        <input matInput [(ngModel)]="materia.nombre_materia" name="id" placeholder="Escribe el nombre de la materia">
+        <input matInput [(ngModel)]="materias.nombre_materia" name="id" placeholder="Escribe el nombre de la materia">
       </mat-form-field>
       <div *ngIf="errors.nombre_materia" class="invalid-feedback">{{ errors.nombre_materia }}</div>
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Sección</mat-label>
-        <input matInput [(ngModel)]="materia.seccion" name="id" placeholder="Escribe la sección">
+        <input matInput [(ngModel)]="materias.seccion" name="id" placeholder="Escribe la sección">
       </mat-form-field>
       <div *ngIf="errors.seccion" class="invalid-feedback">{{ errors.seccion }}</div>
 
@@ -42,7 +42,7 @@
       <!-- AQUI VA EL RELOJ INICIO  -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Hora de inicio</mat-label>
-        <input matInput [ngxTimepicker]="timepickerInicio" placeholder="Selecciona la hora" [(ngModel)]="materia.hora_inicio" name="hora_inicio" >
+        <input matInput [ngxTimepicker]="timepickerInicio" placeholder="Selecciona la hora" [(ngModel)]="materias.hora_inicio" name="hora_inicio" >
         <mat-icon matSuffix (click)="timepickerInicio.open()">schedule</mat-icon>
         <ngx-material-timepicker #timepickerInicio [format]="24" ></ngx-material-timepicker>
       </mat-form-field>
@@ -53,7 +53,7 @@
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Hora de fin</mat-label>
-        <input matInput [ngxTimepicker]="timepickerFin" placeholder="Selecciona la hora" [(ngModel)]="materia.hora_fin" name="hora_fin" >
+        <input matInput [ngxTimepicker]="timepickerFin" placeholder="Selecciona la hora" [(ngModel)]="materias.hora_fin" name="hora_fin" >
         <mat-icon matSuffix (click)="timepickerFin.open()">schedule</mat-icon>
         <ngx-material-timepicker #timepickerFin [format]="24" ></ngx-material-timepicker>
       </mat-form-field>
@@ -62,13 +62,13 @@
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Salón</mat-label>
-        <input matInput [(ngModel)]="materia.salon" name="id" placeholder="Escribe el salon">
+        <input matInput [(ngModel)]="materias.salon" name="id" placeholder="Escribe el salon">
       </mat-form-field>
       <div *ngIf="errors.salon" class="invalid-feedback">{{ errors.salon }}</div>
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Programa educativo</mat-label>
-        <mat-select [(ngModel)]="materia.programa_educativo">
+        <mat-select [(ngModel)]="materias.programa_educativo">
           <mat-option *ngFor="let programa of programa_educativo" [value]="programa.viewValue">
             {{programa.viewValue}}
           </mat-option>

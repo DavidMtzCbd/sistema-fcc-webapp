@@ -99,21 +99,21 @@ export class MateriasService {
 
     //Funcion para obtener la materia con su ID
     public getMateriaByID(idUser: Number){
-      return this.http.get<any>(`` ,httpOptions);
+      return this.http.get<any>(`${environment.url_api}/materias/?id=${idUser}` ,httpOptions);
     }
 
       //Funcion para editar
   public editarMateria (data: any): Observable <any>{
     var token = this.facadeService.getSessionToken();
     var headers = new HttpHeaders({ 'Content-Type': 'application/json' , 'Authorization': 'Bearer '+token});
-    return this.http.put<any>(``, data, {headers:headers});
+    return this.http.put<any>(`${environment.url_api}/materias-edit/`, data, {headers:headers});
   }
 
   // Funcion para eliminar materia
   public eliminarMateria(idUser: number): Observable <any>{
     var token = this.facadeService.getSessionToken();
     var headers = new HttpHeaders({ 'Content-Type': 'application/json' , 'Authorization': 'Bearer '+token});
-    return this.http.delete<any>(``, {headers:headers});
+    return this.http.delete<any>(`${environment.url_api}/materiass-edit/?id=${idUser}`, {headers:headers});
   }
 
 }

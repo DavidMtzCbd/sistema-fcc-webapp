@@ -22,6 +22,7 @@ const routes: Routes = [
   { path: 'graficas', component: GraficasScreenComponent, pathMatch: 'full'},
   { path: 'materias', component: MateriasScreenComponent, pathMatch: 'full'},
   { path: 'registro-materias', component: RegistroMateriasScreenComponent, pathMatch: 'full'},
+  { path: 'registro-materias/:id', component: RegistroMateriasScreenComponent, pathMatch: 'full'},
 ];
 
 @NgModule({

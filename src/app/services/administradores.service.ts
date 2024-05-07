@@ -130,4 +130,9 @@ export class AdministradoresService {
     return this.http.delete<any>(`${environment.url_api}/admins-edit/?id=${idUser}`, {headers:headers});
   }
 
+  public getTotalUsuarios(){
+    var token = this.facadeService.getSessionToken();
+    var headers = new HttpHeaders({'Content-type': 'application/json', 'Authorization': `Bearer ${token}`});
+    return this.http.get<any>(`${environment.url_api}/admins-edit/`, {headers: headers});
+  }
 }
