@@ -93,19 +93,19 @@ export class MateriasScreenComponent implements OnInit{
 
   public delete(idUser: number){
     const dialogRef = this.dialog.open(EliminarUserModalComponent,{
-      data: {id: idUser, rol: 'maestro'}, //Se pasan valores a través del componente
+      data: {id: idUser, rol: 'materia'}, //Se pasan valores a través del componente
       height: '288px',
       width: '328px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if(result.isDelete){
-        console.log("Maestro eliminado");
+        console.log("Materia eliminada");
         //Recargar página
         window.location.reload();
       }else{
-        alert("Maestro no eliminado ");
-        console.log("No se eliminó al maestro");
+        alert("Materia no eliminada ");
+        console.log("No se eliminó la materia");
       }
     });
   }

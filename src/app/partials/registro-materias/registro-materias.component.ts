@@ -20,7 +20,7 @@ export class RegistroMateriasComponent implements OnInit{
   public token: string = "";
   public errors:any={};
   public editar:boolean = false;
-  public idUser: Number = 0;
+  public idMat: Number = 0;
 
   // check
 
@@ -53,8 +53,9 @@ export class RegistroMateriasComponent implements OnInit{
     if(this.activatedRoute.snapshot.params['id'] != undefined){
       this.editar = true;
       //Asignamos a nuestra variable global el valor del ID que viene por la URL
-      this.idUser = this.activatedRoute.snapshot.params['id'];
-      console.log("ID User: ", this.idUser);
+      this.idMat = this.activatedRoute.snapshot.params['id'];
+      console.log("ID materia: ", this.idMat);
+      this.getMateriaByID();
       //Al iniciar la vista asignamos los datos del user
       this.materias = this.datos_materia;
     }else{
@@ -152,4 +153,27 @@ export class RegistroMateriasComponent implements OnInit{
     }
   }
 
+  public getMateriaByID(){
+    console.log("Obteniendo datos de la materia...", this.idMat); // Corregido: accedemos a idMat
+    this.materiasService.getMateriaByID(this.idMat).subscribe(
+      (response) => {
+        console.log("Datos de la materia: ", response);
+        this.materias = response; // Corregido: asignamos response a materias
+        // Parse the string into an array
+        if (typeof this.materias.dias === 'string') {
+          this.materias.dias = JSON.parse(this.materias.dias.replace(/'/g, '"'));
+        }
+        console.log("Array de dias: ", this.materias.dias);
+      },
+      (error) => {
+        alert("Error al obtener los datos de la materia para editar");
+        console.log("Error: ", error);
+      }
+    )
+  }
+
+
 }
+
+
+
