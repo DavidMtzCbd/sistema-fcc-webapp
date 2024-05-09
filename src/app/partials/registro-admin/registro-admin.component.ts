@@ -3,6 +3,8 @@ import { AdministradoresService } from '../../services/administradores.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FacadeService } from 'src/app/services/facade.service';
 import { Location } from '@angular/common';
+import { EditarUserModalComponent } from 'src/app/modals/editar-user-modal/editar-user-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 //Para poder usar jquery definir esto
 declare var $:any;
 
@@ -32,7 +34,8 @@ public idUser: Number = 0;
     private router: Router,
     public activatedRoute: ActivatedRoute,
     private location: Location,
-    private facadeService: FacadeService
+    private facadeService: FacadeService,
+    public dialog : MatDialog
   ){}
 
   ngOnInit(): void {
@@ -96,16 +99,30 @@ console.log("Admin: ", this.admin);
     }
     console.log("Pasó la validación");
 
-    this.administradoresService.editarAdmin(this.admin).subscribe(
-      (response)=>{
-        alert("Administrador editado correctamente");
-        console.log("Admin editado: ", response);
-        //Si se editó, entonces mandar al home
-        this.router.navigate(["home"]);
-      }, (error)=>{
-        alert("No se pudo editar el administrador");
+    const dialogRef = this.dialog.open(EditarUserModalComponent,{
+      data: {rol: 'administrador'}, //Se pasan valores a través del componente
+      height: '288px',
+      width: '328px',
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.isEdit){
+        this.administradoresService.editarAdmin(this.admin).subscribe(
+          (response)=>{
+            alert("Administrador editado correctamente");
+            console.log("Administrador editado: ", response);
+            //Si se editó, entonces mandar al home
+            this.router.navigate(["home"]);
+          }, (error)=>{
+            alert("No se pudo editar al administrador");
+            console.log("Error: ", error);
+          }
+        );
+      }else{
+        console.log("No se editó al administrador");
       }
-    );
+    });
   }
 
   //Funciones para password

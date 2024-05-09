@@ -17,10 +17,10 @@
             <li class="nav-item" *ngIf="rol!='maestro' && rol!='alumno'">
               <a class="nav-link" id="maestro" (click)="clickNavLink('maestros')">Maestros</a>
             </li>
-            <li class="nav-item" *ngIf="rol!='maestro' && rol!='alumno'">
+            <li class="nav-item" *ngIf="rol!='alumno'">
               <a class="nav-link" id="materia" (click)="clickNavLink('materias')">Lista de materias</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="rol!='alumno'">
               <a class="nav-link" id="graficas" (click)="clickNavLink('graficas')">Gráficas</a>
             </li>
             <li class="nav-item dropdown">

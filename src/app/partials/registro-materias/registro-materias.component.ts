@@ -3,6 +3,8 @@ import { Location } from '@angular/common';
 import { MateriasService } from '../../services/materias.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FacadeService } from 'src/app/services/facade.service';
+import { EditarUserModalComponent } from 'src/app/modals/editar-user-modal/editar-user-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 declare var $:any;
 
 @Component({
@@ -46,7 +48,10 @@ export class RegistroMateriasComponent implements OnInit{
     private materiasService: MateriasService,
     private router: Router,
     public activatedRoute: ActivatedRoute,
-    private facadeService: FacadeService,){}
+    private facadeService: FacadeService,
+    public dialog : MatDialog,
+  ){}
+
 
   ngOnInit(): void {
     //El primer if valida si existe un parámetro en la URL
@@ -102,7 +107,6 @@ export class RegistroMateriasComponent implements OnInit{
 
 
   }
-
   public actualizar(){
     //Validación
     this.errors = [];
@@ -113,16 +117,29 @@ export class RegistroMateriasComponent implements OnInit{
     }
     console.log("Pasó la validación");
 
-    this.materiasService.editarMateria(this.materias).subscribe(
-      (response)=>{
-        alert("Materia editado correctamente");
-        console.log("Materia editado: ", response);
-        //Si se editó, entonces mandar al home
-        this.router.navigate(["home"]);
-      }, (error)=>{
-        alert("No se pudo editar la materia");
+    const dialogRef = this.dialog.open(EditarUserModalComponent,{
+      data: {rol: 'materia'}, //Se pasan valores a través del componente
+      height: '288px',
+      width: '328px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.isEdit){
+        this.materiasService.editarMateria(this.materias).subscribe(
+          (response)=>{
+            alert("Materia editada correctamente");
+            console.log("Materia editada: ", response);
+            //Si se editó, entonces mandar al home
+            this.router.navigate(["home"]);
+          }, (error)=>{
+            alert("No se pudo editar la materia");
+            console.log("Error: ", error);
+          }
+        );
+      }else{
+        console.log("No se editó la materia");
       }
-    );
+    });
   }
 
   public checkboxChange(event:any){

@@ -6,6 +6,7 @@ import { MateriasService } from '../../services/materias.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { EliminarUserModalComponent } from 'src/app/modals/eliminar-user-modal/eliminar-user-modal.component';
+import { EditarUserModalComponent } from 'src/app/modals/editar-user-modal/editar-user-modal.component';
 
 @Component({
   selector: 'app-materias-screen',
@@ -17,8 +18,10 @@ export class MateriasScreenComponent implements OnInit{
   public rol : string = "";
   public token : string = "";
   public lista_materias : any[] = [];
+  public displayedColumns : string[];
 
-  displayedColumns : string[] = ['nrc', 'nombre_materia', 'dias', 'hora_inicio', 'hora_fin', 'salon', 'editar', 'eliminar'];
+
+
   dataSource = new MatTableDataSource<DatosUsuario>(this.lista_materias as DatosUsuario[]);
 
   @ViewChild(MatPaginator) paginator : MatPaginator;
@@ -33,6 +36,14 @@ export class MateriasScreenComponent implements OnInit{
   ngOnInit(): void {
     this.name_user = this.facadeService.getUserCompleteName();
     this.rol = this.facadeService.getUserGroup();
+
+    if(this.rol != 'administrador'){
+    this.displayedColumns = ['nrc', 'nombre_materia', 'dias', 'hora_inicio', 'hora_fin', 'salon'];
+    }else{
+      this.displayedColumns = ['nrc', 'nombre_materia', 'dias', 'hora_inicio', 'hora_fin', 'salon', 'editar', 'eliminar'];
+    }
+
+
     //Validar que haya inicio de sesión
     //Obtengo el token del login
     this.token = this.facadeService.getSessionToken();
@@ -85,11 +96,12 @@ export class MateriasScreenComponent implements OnInit{
         console.log("No se pudo obtener la lista de usuarios", error);
       }
     );
+
   }
 
   public goEditar(idUser: number){
-    this.router.navigate(["registro-materias/"+idUser]);
-  }
+        this.router.navigate(["registro-materias/"+idUser])
+}
 
   public delete(idUser: number){
     const dialogRef = this.dialog.open(EliminarUserModalComponent,{

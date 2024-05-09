@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -96,7 +96,7 @@ public obtenerMaestros(){
 
 //Funcion para editar
 public goEditar(idUser: number){
-  this.router.navigate(["registro-usuarios/maestro/"+idUser]);
+      this.router.navigate(["registro-usuarios/maestro/"+idUser]);
 }
 
   // Funcion para eliminar

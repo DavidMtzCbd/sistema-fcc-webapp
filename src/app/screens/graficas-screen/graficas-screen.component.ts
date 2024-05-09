@@ -90,16 +90,14 @@ export class GraficasScreenComponent implements OnInit {
 
   // Bar Chart
   barChartData: ChartData = {
-    labels: ["Desarrollo Web", "Mineria de Datos", "Redes", "Móviles", "Matemáticas"],
+    labels: ['Administradores', 'Maestros', 'Alumnos'],
     datasets: [
       {
-        data: [34, 43, 54, 28, 74],
-        label: 'Registro de materias',
+        data: [],
+        label: 'Registro de usuarios',
         backgroundColor: ['#F88406',
                           '#FCFF44',
-                          '#82D3FB',
-                          '#FB82F5',
-                          '#2AD84A'],
+                          '#82D3FB'],
       },
     ],
   };
@@ -126,10 +124,13 @@ export class GraficasScreenComponent implements OnInit {
   updateChartData(data: any) {
     this.pieChartData.datasets[0].data = [data.admins, data.maestros, data.alumnos];
     this.doughnutChartData.datasets[0].data = [data.admins, data.maestros, data.alumnos];
+    this.barChartData.datasets[0].data = [data.admins, data.maestros, data.alumnos];
+
 
 
     this.pieChartData = { ...this.pieChartData };
     this.doughnutChartData = { ...this.doughnutChartData };
+    this.barChartData = { ...this.barChartData };
     this.cdr.detectChanges();
   }
 }

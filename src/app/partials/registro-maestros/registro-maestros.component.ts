@@ -3,6 +3,8 @@ import { Location } from '@angular/common';
 import { MaestrosService } from 'src/app/services/maestros.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FacadeService } from 'src/app/services/facade.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditarUserModalComponent } from 'src/app/modals/editar-user-modal/editar-user-modal.component';
 declare var $:any;
 
 @Component({
@@ -57,6 +59,7 @@ export class RegistroMaestrosComponent implements OnInit{
     private router: Router,
     public activatedRoute: ActivatedRoute,
     private facadeService: FacadeService,
+    public dialog: MatDialog
 
   ){
   }
@@ -167,16 +170,29 @@ export class RegistroMaestrosComponent implements OnInit{
     }
     console.log("Pasó la validación");
 
-    this.maestrosService.editarMaestro(this.maestro).subscribe(
-      (response)=>{
-        alert("Maestro editado correctamente");
-        console.log("Maestro editado: ", response);
-        //Si se editó, entonces mandar al home
-        this.router.navigate(["home"]);
-      }, (error)=>{
-        alert("No se pudo editar el maestro");
+    const dialogRef = this.dialog.open(EditarUserModalComponent,{
+      data: {rol: 'maestro'}, //Se pasan valores a través del componente
+      height: '288px',
+      width: '328px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.isEdit){
+        this.maestrosService.editarMaestro(this.maestro).subscribe(
+          (response)=>{
+            alert("Maestro editado correctamente");
+            console.log("Maestro editado: ", response);
+            //Si se editó, entonces mandar al home
+            this.router.navigate(["home"]);
+          }, (error)=>{
+            alert("No se pudo editar la maestro");
+            console.log("Error: ", error);
+          }
+        );
+      }else{
+        console.log("No se editó al maestro");
       }
-    );
+    });
   }
 
   public checkboxChange(event:any){
