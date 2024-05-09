@@ -1,18 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import DatalabelsPlugin from 'chartjs-plugin-datalabels';
 import { AdministradoresService } from 'src/app/services/administradores.service';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import DatalabelsPlugin from 'chartjs-plugin-datalabels';
+
+interface ChartData {
+  labels: string[];
+  datasets: ChartDataset[];
+}
+
+interface ChartDataset {
+  data: number[];
+  label: string;
+  backgroundColor: string | string[];
+}
 
 @Component({
   selector: 'app-graficas-screen',
   templateUrl: './graficas-screen.component.html',
-  styleUrls: ['./graficas-screen.component.scss']
+  styleUrls: ['./graficas-screen.component.scss'],
 })
-export class GraficasScreenComponent implements OnInit{
 
-  //Agregar chartjs-plugin-datalabels
-  //Variables
-  public total_user: any = {};
-  //Histograma
+export class GraficasScreenComponent implements OnInit {
+
+  public data:any = {};
+
+  constructor(
+    private administradoresService: AdministradoresService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.obtenerTotalUsuarios();
+  }
+
+  // Line Chart
   lineChartData = {
     labels: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     datasets: [
@@ -23,90 +43,93 @@ export class GraficasScreenComponent implements OnInit{
       }
     ]
   }
+
   lineChartOption = {
     responsive:false
   }
+
   lineChartPlugins = [ DatalabelsPlugin ];
 
-  //Barras
-  barChartData = {
-    labels: ["Desarrollo Web", "Minería de Datos", "Redes", "Móviles", "Matemáticas"],
+  // GRAFICA DE PASTEL
+  pieChartData: ChartData = {
+    labels: ['Administradores', 'Maestros', 'Alumnos'],
     datasets: [
       {
-        data:[34, 43, 54, 28, 74],
+        data: [], // Datos dinámicos irán aquí
+        label: 'Registro de usuarios',
+        backgroundColor: ['#FFA0C2', '#BF07D3', '#07D3AB'],
+      },
+    ],
+  };
+
+  pieChartOption = {
+    responsive: true,
+    maintainAspectRatio: false,
+  };
+
+  pieChartPlugins = [DatalabelsPlugin];
+
+  // GRAFICA DE DONA
+  doughnutChartData: ChartData = {
+    labels: ['Administradores', 'Maestros', 'Alumnos'],
+    datasets: [
+      {
+        data: [], // Datos dinámicos irán aquí
+        label: 'Registro de usuarios',
+        backgroundColor: ['#FFA0C2', '#9E0263', '#FFC359'],
+      },
+    ],
+  };
+
+  doughnutChartOption = {
+    responsive: true,
+    maintainAspectRatio: false,
+  };
+
+  doughnutChartPlugins = [DatalabelsPlugin];
+
+  // Bar Chart
+  barChartData: ChartData = {
+    labels: ["Desarrollo Web", "Mineria de Datos", "Redes", "Móviles", "Matemáticas"],
+    datasets: [
+      {
+        data: [34, 43, 54, 28, 74],
         label: 'Registro de materias',
-        backgroundColor: [
-          '#F88406',
-          '#FCFF44',
-          '#82D3FB',
-          '#FB82F5',
-          '#2AD84A'
-        ]
-      }
-    ]
-  }
+        backgroundColor: ['#F88406',
+                          '#FCFF44',
+                          '#82D3FB',
+                          '#FB82F5',
+                          '#2AD84A'],
+      },
+    ],
+  };
+
   barChartOption = {
     responsive:false
   }
-  barChartPlugins = [ DatalabelsPlugin ];
 
-  //Circular
-  //Circular
-  pieChartData = {
-    labels: ["Administradores", "Maestros", "Alumnos"],
-    datasets: [
-      {
-        data:[89, 34, 43],
-        label: 'Registro de usuarios',
-        backgroundColor: [
-          '#FCFF44',
-          '#F1C8F2',
-          '#31E731'
-        ]
-      }
-    ]
-  }
-  pieChartOption = {
-    responsive:false
-  }
-  pieChartPlugins = [ DatalabelsPlugin ];
+  barChartPlugins = [DatalabelsPlugin];
 
-  // Doughnut
-  doughnutChartData = {
-    labels: ["Administradores", "Maestros", "Alumnos"],
-    datasets: [
-      {
-        data:[89, 34, 43],
-        label: 'Registro de usuarios',
-        backgroundColor: [
-          '#F88406',
-          '#FCFF44',
-          '#31E7E7'
-        ]
-      }
-    ]
-  }
-  doughnutChartOption = {
-    responsive:false
-  }
-  doughnutChartPlugins = [ DatalabelsPlugin ];
-
-  constructor(
-    private administradoresServices: AdministradoresService
-  ){}
-
-  ngOnInit(): void {
-    this.obtenerTotalUsers();
+  obtenerTotalUsuarios() {
+    this.administradoresService.getTotalUsuarios().subscribe({
+      next: (data) => {
+        console.log('Datos recibidos:', data);
+        this.updateChartData(data);
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error al obtener datos de usuarios', error);
+      },
+    });
   }
 
-  public obtenerTotalUsers(){
-    this.administradoresServices.getTotalUsuarios().subscribe(
-      (response)=>{
-        this.total_user = response;
-        console.log("Total usuarios: ", this.total_user);
-      }, (error)=>{
-        alert("No se pudo obtener el total de cada rol de usuarios");
-      }
-    );
+  updateChartData(data: any) {
+    this.pieChartData.datasets[0].data = [data.admins, data.maestros, data.alumnos];
+    this.doughnutChartData.datasets[0].data = [data.admins, data.maestros, data.alumnos];
+
+
+    this.pieChartData = { ...this.pieChartData };
+    this.doughnutChartData = { ...this.doughnutChartData };
+    this.cdr.detectChanges();
   }
 }
